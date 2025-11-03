@@ -1,0 +1,35 @@
+{
+    "stock": "TCS",
+    "sector": "Information Technology",
+    "current_metrics": {
+        "current_price": 3852.4,
+        "price_change_percent": 1.45,
+        "rsi": 67.8,
+        "volume": 1840000,
+        "volatility": "moderate",
+        "market_cap": "14.3T INR"
+    },
+    "predicted_avg_prices": {
+        "next_day": 3875.6,
+        "next_week": 3910.2,
+        "next_month": 3988.4,
+        "next_quarter": 4105.3,
+        "next_6_months": 4232.7,
+        "next_year": 4390.1
+    },
+    "model_metrics": {
+        "MAPE": 2.4,
+        "RMSE": 42.8,
+        "R2": 0.94,
+        "model_name": "LSTM Forecast Model v3.1"
+    },
+    "news_headlines": [
+        "TCS posts stronger-than-expected Q2 earnings with steady margin growth",
+        "Rupee stability and new deal wins support IT export momentum",
+        "Analysts see long-term upside driven by AI transformation demand"
+    ],
+    "social_media_summary": [
+        "Investors on Reddit describe TCS as a 'safe long-term compounder'",
+        "Some users expect short-term correction due to high RSI and sector rotation"
+    ]
+}
