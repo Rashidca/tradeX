@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import requests
 import re
 from transformers import pipeline
-from langgraph.prebuilt import ToolNode
+
 from langgraph.graph import StateGraph
 
 # -------------------------------
@@ -39,18 +39,18 @@ def fetch_article_text(url):
 # -------------------------------
 # Core News Summarizer Tool
 # -------------------------------
-def news_agent(context: dict):
+def news_agent(MarketState: dict):
     """
     Fetch and summarize recent news for a company.
     """
-    company_name = context.get("stock", "")
+    company_name = MarketState.get("company_name") or MarketState.get("stock")
   
     days = 7
     max_results = 5
     text_limit = 2000
 
     if not company_name:
-        raise ValueError("Input dictionary must include 'stcok'.")
+        raise ValueError("Input must include 'company_name' or 'stock'.")
 
     today = datetime.now()
     start_date = today - timedelta(days=days)
@@ -58,8 +58,11 @@ def news_agent(context: dict):
     googlenews = GoogleNews(lang='en')
     googlenews.set_time_range(start_date.strftime("%m/%d/%Y"), today.strftime("%m/%d/%Y"))
     googlenews.search(company_name)
-    results = googlenews.results(sort=True)[:max_results]
-
+    try:
+        results = googlenews.results(sort=True)[:max_results]
+    except Exception:
+        results = []
+    news_summaries = MarketState.get("news_summaries", []).copy()
     summaries = []
     for item in results:
         url = item.get("link", "").split("&")[0]
@@ -85,16 +88,15 @@ def news_agent(context: dict):
                 summary = "Summary generation failed."
         print("Generated summary:", summary)
         summaries.append(summary)
-    print(summaries)
-    context["news_summaries"] = summaries
-    # print("*"*50)
-    print(context["news_summaries"])
+    # print(summaries)
+    #MarketState["news_summaries"] = summaries
+    # print(context["news_summaries"])
     # print("context after news_agent:", context)
-    return context
+    return {**MarketState, "news_summaries": summaries}
 
 # if __name__ == "__main__":
-#     context = {"company_name": "Apple"}
-#     print(f"🔍 Fetching news for: {context['company_name']} ...\n")
+#     context = {"stock": "Apple"}
+#     print(f"🔍 Fetching news for: {context['stock']} ...\n")
 
 #     result = news_agent(context)
 

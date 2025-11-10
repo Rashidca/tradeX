@@ -7,9 +7,16 @@ from ticker_dataset import get_stock_data, get_priority_values
 from tuned_function import forecast_aapl_cv, plot_forecast, calculate_future_averages
 from hybrid_model import forecast_aapl_hybrid_fixed,smape,flatten_dataframe_columns,summarize_future_prices
 
-# LangGraph imports for news agent
-from langraphnew import news_app1
-
+from news_ui_agent_node import display_news_ui
+from news_agent_node import news_agent
+from redditfinal import get_reddit_stock_summary
+from reddit_ui import display_reddit_ui
+from bearbullui import display_researcher_rounds
+from bearbull import bull_agent, bear_agent, facilitator_agent
+from riskanalysis import positive_risk_agent, negative_risk_agent, risk_facilitator_agent
+from riskui import display_risk_analysis_rounds_
+from strategies import strategist_agent
+from strategiesui import display_strategist_result
 # ==============================
 # File path for storing CSV
 # ==============================
@@ -192,7 +199,7 @@ if st.button("🚀 Proceed"):
             # News + Reddit via LangGraph
             # --------------------------
             st.write("---")
-            st.subheader(f"📰 Latest News Summaries for {ticker.upper()}")
+            st.subheader(f"📰 Latest News and Reddit Summaries for {ticker.upper()}")
             news_container = st.container()
             reddit_container = st.container()
             researcher_round1_container = st.container()
@@ -212,31 +219,31 @@ if st.button("🚀 Proceed"):
             content_dict["risk_analysis_round3_container"] = risk_analysis_round3_container
             content_dict["strategy_container"] = strategy_container
             try:
-                with st.spinner(f"Fetching news and Reddit for {ticker.upper()} via LangGraph..."):
-                    # context = {"company_name": ticker.upper(), "news_container": news_container, "reddit_container": reddit_container, "news_analyst": None}
-                    # print(context)
-                    
-                    result = news_app1.invoke(content_dict)
-                    # # Render on main thread using returned data
-                    # if isinstance(result, dict):
-                    #     summaries = result.get("news_analyst") or []
-                    #     reddit_summaries = result.get("reddit_summary") or []
-                    # else:
-                    #     try:
-                    #         summaries = result.get("news_analyst") or []  # type: ignore[attr-defined]
-                    #         reddit_summaries = result.get("reddit_summary") or []  # type: ignore[attr-defined]
-                    #     except Exception:
-                    #         summaries = []
-                    #         reddit_summaries = []
-                    # Update content_dict with news and reddit
-                    # content_dict["news_summaries"] = summaries
-                    # content_dict["reddit_summaries"] = reddit_summaries
-                    # display_news_in_streamlit(ticker.upper(), summaries, news_container)
-                    # display_reddit_in_streamlit(ticker.upper(), reddit_summaries, reddit_container)
-                    
+                with st.spinner(f"Fetching news for {ticker.upper()}"):
+                  content_dict = news_agent(content_dict)
+                  content_dict=display_news_ui(content_dict)
+                
+                  content_dict=get_reddit_stock_summary(content_dict)
+                  content_dict=display_reddit_ui(content_dict)
+                with st.spinner("Running Researcher Debate..."):
+                    for i in range(3):
+                        content_dict=bull_agent(content_dict)
+                        content_dict=bear_agent(content_dict)
+                        content_dict=facilitator_agent(content_dict)
+                    content_dict=display_researcher_rounds(content_dict)
+                with st.spinner("Running Risk Analysis Debate..."):
+                    for i in range(3):
+                        content_dict=positive_risk_agent(content_dict)
+                        content_dict=negative_risk_agent(content_dict)
+                        content_dict=risk_facilitator_agent(content_dict)
+                    content_dict=display_risk_analysis_rounds(content_dict)
+                with st.spinner("Running Strategy Agent..."):
+                    content_dict=strategist_agent(content_dict)
+                    content_dict=display_strategist_result(content_dict)
             except Exception as e:
                 st.error(f"❌ Error fetching or displaying news: {e}")
             # Mirror for backward-compatibility and print schema to terminal
+            print(content_dict)
             content_dic = content_dict
             try:
                 print("[CONTENT_DICT]", json.dumps(content_dict, indent=2, default=str))

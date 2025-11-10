@@ -15,4 +15,4 @@ graph.add_edge("news_agent", "news_ui_agent")
 
 graph.set_finish_point("news_ui_agent")
 # Compile
-news_app = graph.compile()
+news_app1 = graph.compile()

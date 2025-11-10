@@ -53,6 +53,7 @@ class RiskDebateState(TypedDict):
 # -----------------------------
 
 class MarketState(TypedDict):
+    
     stock: str
     user_action: str
     num_stocks: int
