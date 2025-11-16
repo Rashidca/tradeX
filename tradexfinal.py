@@ -4,7 +4,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 from ticker_dataset import get_stock_data, get_priority_values
-from tuned_function import forecast_aapl_cv, plot_forecast, calculate_future_averages
 from hybrid_model import forecast_aapl_hybrid_fixed,smape,flatten_dataframe_columns,summarize_future_prices
 
 from news_ui_agent_node import display_news_ui
