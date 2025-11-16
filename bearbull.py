@@ -10,7 +10,7 @@ llm = init_chat_model(
     "llama-3.3-70b-versatile",   # <-- Groq reasoning model
     model_provider="groq",       # <-- switch provider
     temperature=0.5,
-    api_key="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"  # <-- your Groq key
+    api_key="api key"  # <-- your Groq key
 )
 
 
