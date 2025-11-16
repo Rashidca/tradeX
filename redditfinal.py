@@ -36,9 +36,9 @@ def get_reddit_stock_summary(data: dict) -> dict:
 
     # --- Step 4: Initialize Reddit client ---
     reddit = praw.Reddit(
-                client_id="O9Yer2rCexvhCkslsxlT-w",
-                client_secret="06CHjc1FVQ3AtiYcXf1n42RyD37YDQ",
-                user_agent="TradeX:v1.0 (by u/Agitated-Chair-4187)"
+                client_id="[your client id]",
+                client_secret="[your client_secret]",
+                user_agent="[your user agent id]"
             )
 
     # --- Step 5: Fetch Reddit posts (mix of 'new' and 'relevant') ---
@@ -105,7 +105,7 @@ def get_reddit_stock_summary(data: dict) -> dict:
     try:
         print("🦙 Refining with Llama 3 (Groq)...")
         llm = ChatGroq(
-            groq_api_key="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",
+            groq_api_key="[your groq api key]",
             model_name="llama-3.1-8b-instant",
             temperature=0.3,
             
