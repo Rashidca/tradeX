@@ -12,7 +12,7 @@ llm = init_chat_model(
     "llama-3.3-70b-versatile",
     model_provider="groq",
     temperature=0.7,
-    api_key="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"
+    api_key="apikey"
 )
 
 
