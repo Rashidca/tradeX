@@ -58,9 +58,9 @@ class RedditStockNewsTool(BaseTool):
 
         try:
             reddit = praw.Reddit(
-                client_id="O9Yer2rCexvhCkslsxlT-w",
-                client_secret="06CHjc1FVQ3AtiYcXf1n42RyD37YDQ",
-                user_agent="TradeX:v1.0 (by u/Agitated-Chair-4187)"
+                client_id="[your client id]",
+                client_secret="[your client_secret]",
+                user_agent="[your user_agent id]"
             )
 
             stock_subreddits = "stocks+StockMarket+investing"
